@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -37,6 +43,28 @@ public class MainActivity extends AppCompatActivity {
         enterName.setText(name);
         enterAge.setText(String.valueOf(age));
         isEnrolled.setChecked(enrolled);
+
+
+
+        //THIS IS THE GSON CODE HERE//
+        Gson gson = new Gson();
+
+        ArrayList<FamilyMember> family = new ArrayList<>();
+        family.add(new FamilyMember("Mother", 99));
+        family.add(new FamilyMember("Father", 101));
+        family.add(new FamilyMember("Sister", 57));
+        family.add(new FamilyMember("Sister", 57));
+        family.add(new FamilyMember("Son", 28));
+
+        Employee greg = new Employee("Greg", 68, "greg.mail@gmail.com", new Address("United States", "New York"), family);
+
+        String json = gson.toJson(greg);
+        Employee greg2 = gson.fromJson(json, Employee.class);
+
+        String json2 = gson.toJson(family);
+        Type familyType = new TypeToken<ArrayList<FamilyMember>>(){}.getType();     //this is for when the app wants to deserialize it back into an arraylist of family members
+        ArrayList<FamilyMember> family2 = gson.fromJson(json2, familyType);
+
     }
 
     public void save (View view)
@@ -62,4 +90,5 @@ public class MainActivity extends AppCompatActivity {
         // otherwise, it will throw an error
         myEdit.commit();
     }
+
 }
